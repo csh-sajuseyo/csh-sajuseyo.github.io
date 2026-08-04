@@ -1,7 +1,7 @@
 {
   "name": "한눈에 학원 점검·출장",
   "short_name": "한눈에 학원업무",
-  "description": "남부 3구 학원·교습소 점검후보, 기관구분 필터, 동일좌표 묶음과 출장 동선 R2.9",
+  "description": "남부 3구 학원·교습소 점검후보, 기관구분 필터, 동일좌표 묶음과 출장 동선 R2.10",
   "start_url": "./?app=2901",
   "scope": "./",
   "display": "standalone",
