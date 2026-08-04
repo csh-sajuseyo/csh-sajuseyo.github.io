@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'io.github.cshsajuseyo.hneacademy'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'io.github.cshsajuseyo.hneacademy'
+        minSdk 26
+        targetSdk 36
+        versionCode 21200
+        versionName '2.12'
+
+        buildConfigField 'String', 'KAKAO_JS_KEY', '"1a52867f72bcdc775691c5dd9a42e6a0"'
+        buildConfigField 'String', 'APP_URL', '"https://csh-sajuseyo.github.io/academy-work/?native=21200"'
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    packaging {
+        resources {
+            excludes += ['/META-INF/{AL2.0,LGPL2.1}']
+        }
+    }
+}
