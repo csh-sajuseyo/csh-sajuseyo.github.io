@@ -2,7 +2,7 @@
   "name": "한눈에 학원 점검·출장",
   "short_name": "한눈에 학원업무",
   "description": "남부 3구 학원 점검후보 선정, 지도 주변 탐색과 출장 동선 작성",
-  "start_url": "./",
+  "start_url": "./?app=2612",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f4f6f8",
