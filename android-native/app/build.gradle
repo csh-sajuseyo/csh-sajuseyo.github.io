@@ -10,25 +10,38 @@ android {
         applicationId 'io.github.cshsajuseyo.hneacademy'
         minSdk 26
         targetSdk 36
-        versionCode 21200
-        versionName '2.12'
+        versionCode 21300
+        versionName '2.13'
 
         buildConfigField 'String', 'KAKAO_JS_KEY', '"1a52867f72bcdc775691c5dd9a42e6a0"'
-        buildConfigField 'String', 'APP_URL', '"https://csh-sajuseyo.github.io/academy-work/?native=21200"'
+        buildConfigField 'String', 'APP_URL', '"https://csh-sajuseyo.github.io/academy-work/?native=21300"'
     }
 
     buildFeatures {
         buildConfig true
     }
 
+    signingConfigs {
+        // R2.13 이후 시험 APK를 같은 서명으로 계속 덮어쓰기 설치하기 위한 고정 시험키입니다.
+        // Play Store 배포용 키로 사용하지 않습니다.
+        hneTestUpdate {
+            storeFile file('hne-academy-test-update.keystore')
+            storePassword 'HneAcademy213!'
+            keyAlias 'hneacademytest'
+            keyPassword 'HneAcademy213!'
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix '.debug'
             versionNameSuffix '-debug'
+            signingConfig signingConfigs.hneTestUpdate
         }
         release {
             minifyEnabled false
             shrinkResources false
+            signingConfig signingConfigs.hneTestUpdate
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

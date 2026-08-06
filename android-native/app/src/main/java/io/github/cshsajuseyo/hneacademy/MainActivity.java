@@ -25,7 +25,11 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 
 public final class MainActivity extends Activity {
     private static final int FILE_CHOOSER_REQUEST = 2101;
@@ -33,19 +37,21 @@ public final class MainActivity extends Activity {
     private static final String APP_HOST = "csh-sajuseyo.github.io";
     private static final String APP_PATH_PREFIX = "/academy-work/";
     private static final String LOCAL_STORAGE_KEY = "hne_trip_route_kakao_js_key";
+    private static final String NATIVE_PATCH_ASSET = "native_patch.js";
 
     private WebView webView;
     private ProgressBar progressBar;
-    private TextView loadingText;
     private ValueCallback<Uri[]> fileCallback;
     private GeolocationPermissions.Callback pendingGeoCallback;
     private String pendingGeoOrigin;
     private boolean keyInjected;
     private boolean contentVisible;
+    private String nativePatchScript;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        nativePatchScript = readAssetText(NATIVE_PATCH_ASSET);
         createContentView();
         configureWebView();
         openApp();
@@ -62,10 +68,9 @@ public final class MainActivity extends Activity {
                 FrameLayout.LayoutParams.MATCH_PARENT));
 
         FrameLayout loading = new FrameLayout(this);
-        FrameLayout.LayoutParams loadingParams = new FrameLayout.LayoutParams(
+        root.addView(loading, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT);
-        root.addView(loading, loadingParams);
+                FrameLayout.LayoutParams.MATCH_PARENT));
 
         progressBar = new ProgressBar(this);
         FrameLayout.LayoutParams progressParams = new FrameLayout.LayoutParams(72, 72);
@@ -73,7 +78,7 @@ public final class MainActivity extends Activity {
         progressParams.bottomMargin = 40;
         loading.addView(progressBar, progressParams);
 
-        loadingText = new TextView(this);
+        TextView loadingText = new TextView(this);
         loadingText.setText(getString(R.string.loading_message));
         loadingText.setTextSize(15f);
         loadingText.setTextColor(Color.rgb(38, 66, 83));
@@ -103,7 +108,10 @@ public final class MainActivity extends Activity {
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
-        settings.setUserAgentString(settings.getUserAgentString() + " HNEAcademyNative/2.12");
+        settings.setLoadWithOverviewMode(false);
+        settings.setUseWideViewPort(true);
+        settings.setTextZoom(100);
+        settings.setUserAgentString(settings.getUserAgentString() + " HNEAcademyNative/2.13");
 
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
@@ -141,12 +149,8 @@ public final class MainActivity extends Activity {
     }
 
     private void applyNativeMode() {
-        String script = "(function(){" +
-                "var a=document.getElementById('openSettingsTopBtn');if(a)a.style.display='none';" +
-                "var b=document.getElementById('installAppBtn');if(b)b.style.display='none';" +
-                "document.documentElement.classList.add('hne-native-app');" +
-                "})();";
-        webView.evaluateJavascript(script, null);
+        if (nativePatchScript == null || nativePatchScript.trim().isEmpty()) return;
+        webView.evaluateJavascript(nativePatchScript, null);
     }
 
     private void revealContent() {
@@ -156,6 +160,18 @@ public final class MainActivity extends Activity {
         webView.setVisibility(View.VISIBLE);
         View loading = ((View) progressBar.getParent());
         loading.setVisibility(View.GONE);
+    }
+
+    private String readAssetText(String fileName) {
+        StringBuilder out = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                getAssets().open(fileName), StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) out.append(line).append('\n');
+            return out.toString();
+        } catch (IOException ignored) {
+            return "";
+        }
     }
 
     private void openExternalUri(Uri uri) {
@@ -169,9 +185,7 @@ public final class MainActivity extends Activity {
                 try {
                     Intent parsed = Intent.parseUri(uri.toString(), Intent.URI_INTENT_SCHEME);
                     String fallback = parsed.getStringExtra("browser_fallback_url");
-                    if (fallback != null) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(fallback)));
-                    }
+                    if (fallback != null) startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(fallback)));
                 } catch (Exception ignoredAgain) {
                     // No compatible app and no usable fallback.
                 }
@@ -202,11 +216,8 @@ public final class MainActivity extends Activity {
             Uri uri = request.getUrl();
             if (isInternalUrl(uri)) return false;
             String scheme = uri.getScheme() == null ? "" : uri.getScheme().toLowerCase();
-            if ("intent".equals(scheme)) {
-                handleIntentUrl(uri.toString());
-            } else {
-                openExternalUri(uri);
-            }
+            if ("intent".equals(scheme)) handleIntentUrl(uri.toString());
+            else openExternalUri(uri);
             return true;
         }
 
@@ -228,6 +239,7 @@ public final class MainActivity extends Activity {
                 injectKeyAndReload();
                 return;
             }
+            applyNativeMode();
             revealContent();
         }
     }
@@ -239,20 +251,19 @@ public final class MainActivity extends Activity {
                                          FileChooserParams fileChooserParams) {
             if (fileCallback != null) fileCallback.onReceiveValue(null);
             fileCallback = filePathCallback;
-            Intent intent;
-            try {
-                intent = fileChooserParams.createIntent();
-            } catch (Exception e) {
-                intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("*/*");
-            }
+
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
             intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     "application/vnd.ms-excel",
                     "text/csv",
+                    "text/comma-separated-values",
                     "application/octet-stream"
             });
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             try {
                 startActivityForResult(intent, FILE_CHOOSER_REQUEST);
                 return true;
@@ -297,6 +308,14 @@ public final class MainActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FILE_CHOOSER_REQUEST && fileCallback != null) {
             Uri[] result = WebChromeClient.FileChooserParams.parseResult(resultCode, data);
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                try {
+                    getContentResolver().takePersistableUriPermission(
+                            data.getData(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } catch (SecurityException ignored) {
+                    // Some document providers do not offer persistable permissions.
+                }
+            }
             fileCallback.onReceiveValue(result);
             fileCallback = null;
         }
@@ -317,17 +336,27 @@ public final class MainActivity extends Activity {
             pendingGeoCallback.invoke(pendingGeoOrigin, granted, false);
             pendingGeoCallback = null;
             pendingGeoOrigin = null;
-            if (!granted && !shouldShowRequestPermissionRationale(
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // User can later enable location in the Android app settings.
-            }
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (webView != null && webView.canGoBack()) webView.goBack();
-        else super.onBackPressed();
+        if (webView == null) {
+            super.onBackPressed();
+            return;
+        }
+        String script = "(function(){try{return window.HNE_NATIVE_BACK?window.HNE_NATIVE_BACK():'pass'}catch(e){return 'pass'}})();";
+        webView.evaluateJavascript(script, result -> {
+            if (result != null && result.contains("handled")) return;
+            if (webView.canGoBack()) webView.goBack();
+            else MainActivity.this.finish();
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (contentVisible) applyNativeMode();
     }
 
     @Override
