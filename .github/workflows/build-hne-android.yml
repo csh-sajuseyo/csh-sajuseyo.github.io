@@ -43,20 +43,20 @@ jobs:
         run: |
           gradle --no-daemon clean assembleDebug bundleDebug
           mkdir -p dist
-          cp app/build/outputs/apk/debug/app-debug.apk dist/HNE-Academy-Work-R2.13.apk
-          cp app/build/outputs/bundle/debug/app-debug.aab dist/HNE-Academy-Work-R2.13-debug.aab
+          cp app/build/outputs/apk/debug/app-debug.apk dist/HNE-Academy-Work-R2.15.apk
+          cp app/build/outputs/bundle/debug/app-debug.aab dist/HNE-Academy-Work-R2.15-debug.aab
           sha256sum dist/* > dist/SHA256SUMS.txt
 
       - name: 설치용 APK 업로드
         uses: actions/upload-artifact@v4
         with:
-          name: HNE-Academy-Work-R2.13-APK
-          path: android-native/dist/HNE-Academy-Work-R2.13.apk
+          name: HNE-Academy-Work-R2.15-APK
+          path: android-native/dist/HNE-Academy-Work-R2.15.apk
           if-no-files-found: error
 
       - name: 전체 빌드 결과 업로드
         uses: actions/upload-artifact@v4
         with:
-          name: HNE-Academy-Work-R2.13-All
+          name: HNE-Academy-Work-R2.15-All
           path: android-native/dist/*
           if-no-files-found: error
