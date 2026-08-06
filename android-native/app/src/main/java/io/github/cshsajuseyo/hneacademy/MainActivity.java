@@ -25,11 +25,7 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 
 public final class MainActivity extends Activity {
     private static final int FILE_CHOOSER_REQUEST = 2101;
@@ -37,7 +33,6 @@ public final class MainActivity extends Activity {
     private static final String APP_HOST = "csh-sajuseyo.github.io";
     private static final String APP_PATH_PREFIX = "/academy-work/";
     private static final String LOCAL_STORAGE_KEY = "hne_trip_route_kakao_js_key";
-    private static final String NATIVE_PATCH_ASSET = "native_patch.js";
 
     private WebView webView;
     private ProgressBar progressBar;
@@ -46,12 +41,10 @@ public final class MainActivity extends Activity {
     private String pendingGeoOrigin;
     private boolean keyInjected;
     private boolean contentVisible;
-    private String nativePatchScript;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        nativePatchScript = readAssetText(NATIVE_PATCH_ASSET);
         createContentView();
         configureWebView();
         openApp();
@@ -105,13 +98,13 @@ public final class MainActivity extends Activity {
         settings.setAllowContentAccess(true);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        settings.setSupportZoom(true);
+        settings.setSupportZoom(false);
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
         settings.setLoadWithOverviewMode(false);
         settings.setUseWideViewPort(true);
         settings.setTextZoom(100);
-        settings.setUserAgentString(settings.getUserAgentString() + " HNEAcademyNative/2.15");
+        settings.setUserAgentString(settings.getUserAgentString() + " HNEAcademyNative/2.16");
 
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
@@ -148,31 +141,15 @@ public final class MainActivity extends Activity {
         });
     }
 
-    private void applyNativeMode() {
-        if (nativePatchScript == null || nativePatchScript.trim().isEmpty()) return;
-        webView.evaluateJavascript(nativePatchScript, null);
-    }
 
     private void revealContent() {
         if (contentVisible) return;
         contentVisible = true;
-        applyNativeMode();
         webView.setVisibility(View.VISIBLE);
         View loading = ((View) progressBar.getParent());
         loading.setVisibility(View.GONE);
     }
 
-    private String readAssetText(String fileName) {
-        StringBuilder out = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                getAssets().open(fileName), StandardCharsets.UTF_8))) {
-            String line;
-            while ((line = reader.readLine()) != null) out.append(line).append('\n');
-            return out.toString();
-        } catch (IOException ignored) {
-            return "";
-        }
-    }
 
     private void openExternalUri(Uri uri) {
         if (uri == null) return;
@@ -239,7 +216,6 @@ public final class MainActivity extends Activity {
                 injectKeyAndReload();
                 return;
             }
-            applyNativeMode();
             revealContent();
         }
     }
@@ -356,7 +332,6 @@ public final class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (contentVisible) applyNativeMode();
     }
 
     @Override
