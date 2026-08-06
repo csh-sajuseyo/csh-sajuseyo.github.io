@@ -17,10 +17,10 @@ jobs:
 
     steps:
       - name: 소스 내려받기
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Java 17 설정
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -43,20 +43,20 @@ jobs:
         run: |
           gradle --no-daemon clean assembleDebug bundleDebug
           mkdir -p dist
-          cp app/build/outputs/apk/debug/app-debug.apk dist/HNE-Academy-Work-R2.15.apk
-          cp app/build/outputs/bundle/debug/app-debug.aab dist/HNE-Academy-Work-R2.15-debug.aab
+          cp app/build/outputs/apk/debug/app-debug.apk dist/HNE-Academy-Work-R2.16.apk
+          cp app/build/outputs/bundle/debug/app-debug.aab dist/HNE-Academy-Work-R2.16-debug.aab
           sha256sum dist/* > dist/SHA256SUMS.txt
 
       - name: 설치용 APK 업로드
         uses: actions/upload-artifact@v4
         with:
-          name: HNE-Academy-Work-R2.15-APK
-          path: android-native/dist/HNE-Academy-Work-R2.15.apk
+          name: HNE-Academy-Work-R2.16-APK
+          path: android-native/dist/HNE-Academy-Work-R2.16.apk
           if-no-files-found: error
 
       - name: 전체 빌드 결과 업로드
         uses: actions/upload-artifact@v4
         with:
-          name: HNE-Academy-Work-R2.15-All
+          name: HNE-Academy-Work-R2.16-All
           path: android-native/dist/*
           if-no-files-found: error
