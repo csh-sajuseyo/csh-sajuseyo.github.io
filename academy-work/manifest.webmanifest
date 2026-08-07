@@ -1,8 +1,8 @@
 {
   "name": "한눈에 학원 점검·출장",
   "short_name": "한눈에 학원업무",
-  "description": "남부 3구 학원·교습소 점검후보·출장 동선 WORK R14 모바일 지도 하단시트",
-  "start_url": "./?app=1400",
+  "description": "남부 3구 학원·교습소 점검후보·출장 동선 WORK R14.1 · 클러스터 목록 복귀형 모바일 하단시트",
+  "start_url": "./?app=1410",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f4f6f8",
