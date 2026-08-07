@@ -104,7 +104,7 @@ public final class MainActivity extends Activity {
         settings.setLoadWithOverviewMode(false);
         settings.setUseWideViewPort(true);
         settings.setTextZoom(100);
-        settings.setUserAgentString(settings.getUserAgentString() + " HNEAcademyNative/2.16");
+        settings.setUserAgentString(settings.getUserAgentString() + " HNEAcademyNative/2.17");
 
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);

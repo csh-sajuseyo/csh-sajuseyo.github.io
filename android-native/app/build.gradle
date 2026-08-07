@@ -10,11 +10,11 @@ android {
         applicationId 'io.github.cshsajuseyo.hneacademy'
         minSdk 26
         targetSdk 36
-        versionCode 21600
-        versionName '2.16'
+        versionCode 21700
+        versionName '2.17'
 
         buildConfigField 'String', 'KAKAO_JS_KEY', '"1a52867f72bcdc775691c5dd9a42e6a0"'
-        buildConfigField 'String', 'APP_URL', '"https://csh-sajuseyo.github.io/academy-work/?native=21600"'
+        buildConfigField 'String', 'APP_URL', '"https://csh-sajuseyo.github.io/academy-work/?native=21700&web=1410"'
     }
 
     buildFeatures {
@@ -22,7 +22,7 @@ android {
     }
 
     signingConfigs {
-        // R2.16 시험 APK를 같은 서명으로 계속 덮어쓰기 설치하기 위한 고정 시험키입니다.
+        // R2.17 시험 APK를 같은 서명으로 계속 덮어쓰기 설치하기 위한 고정 시험키입니다.
         // Play Store 배포용 키로 사용하지 않습니다.
         hneTestUpdate {
             storeFile file('hne-academy-test-update.keystore')
