@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="착착 - 대중교통 이동 시 실시간 운행정보를 활용해 효율적인 출발시각과 환승을 안내하는 모바일 애플리케이션" />
+  <title>착착 | 대중교통 이동 최적화</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --sub: #667085;
+      --line: #e6eaf0;
+      --accent: #2563eb;
+      --accent-soft: #eef4ff;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 32px 18px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+    }
+
+    main {
+      width: min(720px, 100%);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow: 0 18px 50px rgba(23, 32, 51, 0.08);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 18px 0 8px;
+      font-size: clamp(38px, 8vw, 58px);
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .tagline {
+      margin: 0;
+      color: var(--sub);
+      font-size: 18px;
+      line-height: 1.7;
+      word-break: keep-all;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 30px 0;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 15px;
+      line-height: 1.8;
+      word-break: keep-all;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .feature {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fbfcfe;
+    }
+
+    .feature strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .feature span {
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    footer {
+      margin-top: 28px;
+      color: #98a2b3;
+      font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+      main { padding: 28px 22px; border-radius: 20px; }
+      .features { grid-template-columns: 1fr; }
+      .tagline { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="badge">개발 · 테스트 중</div>
+    <h1>착착</h1>
+    <p class="tagline">
+      대중교통 이동 시 버스·지하철 실시간 운행정보를 활용하여<br />
+      효율적인 출발시각과 환승을 안내하는 모바일 애플리케이션입니다.
+    </p>
+
+    <div class="divider"></div>
+
+    <section>
+      <h2>서비스 소개</h2>
+      <p>
+        착착은 현재 위치 또는 저장한 출발지와 목적지를 기준으로 대중교통 이동경로를 확인하고,
+        실시간 운행정보와 이동상황을 바탕으로 불필요한 대기시간을 줄이는 것을 목표로 개발 중입니다.
+      </p>
+
+      <div class="features">
+        <div class="feature">
+          <strong>실시간 대중교통</strong>
+          <span>버스·지하철 운행정보 확인</span>
+        </div>
+        <div class="feature">
+          <strong>출발시각 안내</strong>
+          <span>대기시간을 줄이는 출발 판단</span>
+        </div>
+        <div class="feature">
+          <strong>이동·환승 지원</strong>
+          <span>실제 이동단계에 맞춘 안내</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      ChakChak · Mobile transit optimization project
+    </footer>
+  </main>
+</body>
+</html>
