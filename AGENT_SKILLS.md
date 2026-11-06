@@ -6,7 +6,7 @@
 | 스킬 | 위치 | 출처 |
 |---|---|---|
 | impeccable (디자인 점검) | `.claude/skills/impeccable`, `.agents/skills/impeccable`, `.claude/agents/impeccable-*.md`, `.impeccable/config.json` | pbakaus/impeccable (Apache-2.0) |
-| ponytail (최소 변경·리뷰) | `.claude/skills/ponytail*`, `.agents/skills/ponytail*`, 규칙은 `AGENTS.md` | DietrichGebert/ponytail (MIT) |
+| ponytail (최소 변경·리뷰) | Codex: PC 전역 플러그인(ponytail@ponytail 5.3.3), Claude Code: `.claude/skills/ponytail*`, 규칙은 `AGENTS.md` | DietrichGebert/ponytail (MIT) |
 
 ## 사용법
 
@@ -24,5 +24,5 @@
 
 ## 안전 메모
 - 훅(hook)·settings.json·MCP 설정은 추가하지 않았습니다. 스킬은 직접 호출할 때만 동작합니다.
-- ponytail: Claude Code·Codex 모두 저장소 스킬로 동작합니다(전역 설치 불필요). Codex 전역 플러그인을 나중에 설치하면 `.agents/skills/ponytail*`는 지워도 됩니다. 작업 규칙은 `AGENTS.md`(Claude Code는 `CLAUDE.md`가 이를 불러옴)에 있습니다.
+- ponytail: Codex는 PC에 설치한 공식 플러그인(훅 3개 승인됨)으로, Claude Code는 저장소의 `.claude/skills/ponytail*`로 동작합니다. 작업 규칙은 `AGENTS.md`(Claude Code는 `CLAUDE.md`가 이를 불러옴)에 있습니다.
 - 이 저장소는 공개(GitHub Pages)라서 `AGENTS.md`, `CLAUDE.md`, `AGENT_SKILLS.md`도 사이트에 공개됩니다(키나 비밀 정보는 없음). 점(.)으로 시작하는 `.claude/`, `.agents/`, `.impeccable/` 폴더는 Pages에 올라가지 않습니다.

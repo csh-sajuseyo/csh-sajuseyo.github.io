@@ -9,8 +9,8 @@
 - 답변 끝에 "확인 못 한 것 / 위험" 1~2줄을 쓴다.
 
 ## 언제 무엇을 쓰나
-- 커밋·PR 전: `/ponytail-review`로 현재 diff를 점검하고 결과를 PR 설명에 한 줄로 요약한다.
-- 큰 기능을 넣은 뒤 또는 한 달에 한 번: `/ponytail-audit`(저장소 전체), `/ponytail-debt`(shortcut 정리).
+- 커밋·PR 전: `/ponytail-review`(Codex는 `$ponytail-review`)로 현재 diff를 점검하고 결과를 PR 설명에 한 줄로 요약한다.
+- 큰 기능을 넣은 뒤 또는 한 달에 한 번: `/ponytail-audit`(저장소 전체), `/ponytail-debt`(shortcut 정리). Codex에서는 `/` 대신 `$`.
 - 화면(UI)을 바꾸면: 먼저 `/impeccable critique <화면>`으로 문제를 보고, 동의한 항목만 `/impeccable polish`로 고친다. live 모드는 쓰지 않는다.
 - 화면 파일은 R번호 버전별 HTML이다. 기존 파일을 고칠지, 새 R번호 파일을 만들지 먼저 물어본다.
 
