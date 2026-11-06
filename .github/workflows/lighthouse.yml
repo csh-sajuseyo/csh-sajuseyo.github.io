@@ -1,0 +1,28 @@
+name: Lighthouse (모바일 점수)
+
+# Pages 배포가 끝난 뒤 실제 사이트를 측정한다. 수동 실행도 가능.
+on:
+  workflow_run:
+    workflows: ["pages-build-deployment"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          # 새 R버전을 공개하면 이 주소를 바꾼다
+          urls: |
+            https://csh-sajuseyo.github.io/HNE_ACADEMY_PUBLIC_R17_6_DATA_SPLIT.html
+          runs: 3
+          uploadArtifacts: true
+          temporaryPublicStorage: true
