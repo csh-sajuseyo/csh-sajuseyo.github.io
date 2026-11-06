@@ -5,17 +5,11 @@
 
 | 스킬 | 위치 | 출처 |
 |---|---|---|
-| security-audit (보안 점검) | `.claude/skills/security-audit`, `.agents/skills/security-audit` | cloudflare/security-audit-skill (MIT) |
 | impeccable (디자인 점검) | `.claude/skills/impeccable`, `.agents/skills/impeccable`, `.claude/agents/impeccable-*.md`, `.impeccable/config.json` | pbakaus/impeccable (Apache-2.0) |
 | ponytail (최소 변경·리뷰) | `.claude/skills/ponytail*`, `.agents/skills/ponytail*`, 규칙은 `AGENTS.md` | DietrichGebert/ponytail (MIT) |
 
 ## 사용법
 
-**보안 점검** (Claude Code 또는 Codex를 이 폴더에서 실행 후)
-> security audit this codebase. API 키·시크릿 노출, 카카오 지도 키 사용, 외부 데이터 요청, 사용자 입력·업로드 처리 위주로
-
-- 결과는 저장소 밖 `~/security-audit-skill/<저장소이름>/run-N/REPORT.md`에 저장됩니다(저장소에 쓰지 않음).
-- 샌드박스가 없으면 코드를 실행하지 않고 의심 항목은 `needs_validation`으로 남깁니다.
 
 **디자인 점검** (impeccable — 한눈에 웹·모바일 화면용)
 ```
